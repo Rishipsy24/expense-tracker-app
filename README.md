@@ -47,7 +47,8 @@ PORT=5000
 SUPABASE_URL=your_supabase_project_url
 SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 JWT_SECRET=your_super_secret_jwt_key
-FRONTEND_URL=http://localhost:3000
+# One or more comma-separated browser origins
+FRONTEND_URL=http://localhost:3000,http://localhost:5173
 NODE_ENV=development
 ```
 
@@ -89,14 +90,14 @@ Since Render's backend URL and Vercel's frontend URL do not exist until deployme
    - **Root Directory:** `backend-expense`
    - **Build Command:** `npm install`
    - **Start Command:** `npm start`
-   - **Environment Variables:** Set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `JWT_SECRET`, and `NODE_ENV=production`. (Leave `FRONTEND_URL` temporarily blank or set to `*`).
+   - **Environment Variables:** Set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `JWT_SECRET`, and `NODE_ENV=production`. Leave `FRONTEND_URL` empty until the Vercel URL exists.
 5. **Test Render:** Verify your backend is running by visiting `https://YOUR-RENDER-URL/api/health`.
 6. **Set Vercel URL:** Deploy the frontend to Vercel.
    - **Root Directory:** `frontend-expense`
    - **Build Command:** `npm run build`
    - **Output Directory:** `dist`
    - **Environment Variables:** Set `VITE_API_URL` to your Render URL (`https://YOUR-RENDER-URL/api`).
-7. **Lock CORS:** Once Vercel provides a frontend URL, go back to Render, set `FRONTEND_URL=https://YOUR-VERCEL-URL`, and restart the backend.
+7. **Lock CORS:** Once Vercel provides a frontend URL, go back to Render and set `FRONTEND_URL=https://YOUR-VERCEL-URL` (use comma-separated values if you also want local development). Redeploy or restart the backend.
 8. **Final Test:** Test production authentication and transaction CRUD.
 
 ### SPA Routing on Vercel

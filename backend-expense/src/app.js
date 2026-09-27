@@ -10,9 +10,23 @@ const app = express();
 // Middlewares
 app.use(helmet());
 
-const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+// FRONTEND_URL can contain one or more comma-separated origins.  This keeps
+// local development available while allowing the deployed Vercel application.
+const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:3000,http://localhost:5173')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 app.use(cors({
-  origin: frontendUrl,
+  origin(origin, callback) {
+    // Requests without an Origin header (health checks, curl, server-to-server)
+    // do not need browser CORS protection.
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error(`CORS rejected origin: ${origin}`));
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
