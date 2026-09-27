@@ -21,7 +21,11 @@ app.use(cors({
   origin(origin, callback) {
     // Requests without an Origin header (health checks, curl, server-to-server)
     // do not need browser CORS protection.
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Vercel preview and production deployments use *.vercel.app origins. This
+    // avoids breaking the deployed frontend when Render has a stale env value.
+    const isVercelDeployment = /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin || '');
+
+    if (!origin || allowedOrigins.includes(origin) || isVercelDeployment) {
       return callback(null, true);
     }
 
