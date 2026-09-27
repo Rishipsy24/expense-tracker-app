@@ -1,7 +1,18 @@
 import axios from 'axios';
 
+const configuredApiUrl = import.meta.env.VITE_API_URL;
+
+if (!configuredApiUrl) {
+  throw new Error('VITE_API_URL must be configured for the frontend build.');
+}
+
+// The Express routes are mounted beneath /api. Normalising here prevents a
+// deployment variable such as https://example.onrender.com from producing
+// requests to the non-existent /auth/* routes.
+const apiBaseUrl = `${configuredApiUrl.replace(/\/$/, '')}${configuredApiUrl.replace(/\/$/, '').endsWith('/api') ? '' : '/api'}`;
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: apiBaseUrl,
 });
 
 api.interceptors.request.use(
