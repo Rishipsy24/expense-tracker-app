@@ -12,7 +12,7 @@ app.use(helmet());
 
 // FRONTEND_URL can contain one or more comma-separated origins.  This keeps
 // local development available while allowing the deployed Vercel application.
-const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:3000,http://localhost:5173')
+const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:3000,http://localhost:5173,https://expense-tracker-app-rho-pearl.vercel.app')
   .split(',')
   .map((origin) => origin.trim())
   .filter(Boolean);
