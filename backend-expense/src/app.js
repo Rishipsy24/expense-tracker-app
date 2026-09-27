@@ -40,6 +40,11 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Root Endpoint for Render Health Checks
+app.get('/', (req, res) => {
+  res.status(200).send('Expense Tracker Backend is alive!');
+});
+
 // Fallback for 404
 app.use((req, res, next) => {
   res.status(404);
